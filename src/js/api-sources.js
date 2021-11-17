@@ -1,10 +1,11 @@
 import axios from 'axios';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 
 
 
 export default function getDataFromAPI(evt) {
-
+    
     const URL = 'https://pixabay.com/api/';
     const searchParams = new URLSearchParams({
         key: '24371502-78d84e7e9c9a76cd0b2a52a11',
@@ -14,11 +15,17 @@ export default function getDataFromAPI(evt) {
         safesearch: true,
     })
 
-    axios.get(`${URL}?${searchParams}`)
+   return axios.get(`${URL}?${searchParams}`)
         .then(response => {
-            return response.data;
+            if (response.data.hits.length === 0) {
+                return Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+           }
+            
+            return response.data.hits
+                .forEach(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
+                return ({webformatURL,largeImageURL,tags,likes,views,comments,downloads})
+            });
         })
-        .then(console.log)
         .catch(error=>console.log(error))
 }
 
