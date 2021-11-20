@@ -4,7 +4,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 
 
-export default function getDataFromAPI(evt) {
+export default async function getDataFromAPI(evt) {
     
     const URL = 'https://pixabay.com/api/';
     const searchParams = new URLSearchParams({
@@ -13,20 +13,21 @@ export default function getDataFromAPI(evt) {
         image_type: 'photo',
         orientation: 'horizontal',
         safesearch: true,
+        page:1,
+        per_page:40,
     })
-
-   return axios.get(`${URL}?${searchParams}`)
-        .then(response => {
-            if (response.data.hits.length === 0) {
-                return Notify.failure("Sorry, there are no images matching your search query. Please try again.");
-           }
-            
-            return response.data.hits
-                .forEach(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
-                return ({webformatURL,largeImageURL,tags,likes,views,comments,downloads})
-            });
-        })
-        .catch(error=>console.log(error))
+ 
+    const response = await axios.get(`${URL}?${searchParams}`)
+    try {
+         if (response.data.hits.length === 0) {
+            return Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+        }
+        console.log(response.data)
+        return await response.data;
+    }
+    catch (error) {
+       console.log(error.message)
+    }
 }
 
 
