@@ -29,29 +29,29 @@ function onFormSubmit(evt) {
 function createCardMarkup({ hits }) {
   
   const markup = hits.map(hit => {
-    return `<a href="${hit.largeImageURL}">
-    <div class="photo-card">
-  <img src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" />
-  <div class="info">
-    <p class="info-item">
-      <b>Likes</b>
-      <span>${hit.likes}</span>
-    </p>
-    <p class="info-item">
-      <b>Views</b>
-      <span>${hit.views}</span>
-    </p>
-    <p class="info-item">
-      <b>Comments</b>
-      <span>${hit.comments}</span>
-    </p>
-    <p class="info-item">
-      <b>Downloads</b>
-      <span>${hit.downloads}</span>
-    </p>
-  </div>
-  </div>
-</a>`
+    return `<a href="${hit.largeImageURL}" class='gallery-item'>
+              <div class="photo-card">
+                <img src="${hit.webformatURL}" alt="${hit.tags}" class='gallery-img' loading="lazy" />
+                <div class="info">
+                    <p class="info-item">
+                      <b class="info-description">Likes</b>
+                      <span class="info-number">${hit.likes}</span>
+                    </p>
+                    <p class="info-item">
+                      <b class="info-description">Views</b>
+                      <span class="info-number">${hit.views}</span>
+                    </p>
+                    <p class="info-item">
+                      <b class="info-description">Comments</b>
+                      <span class="info-number">${hit.comments}</span>
+                    </p>
+                    <p class="info-item">
+                      <b class="info-description">Downloads</b>
+                      <span class="info-number">${hit.downloads}</span>
+                    </p>
+                </div>
+              </div>
+          </a>`
   }).join('');
     
     refs.gallery.insertAdjacentHTML('beforeend', markup);
