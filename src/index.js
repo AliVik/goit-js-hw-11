@@ -1,30 +1,41 @@
 import getDataFromAPI from './js/api-sources';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import SimpleLightbox from 'simplelightbox';
+import QueryToApi from "./js/api-sources";
 
-
+const queryToApi = new QueryToApi();
+console.log(queryToApi)
 
 const refs= {
     form: document.querySelector('#search-form'),
     button: document.querySelector('button[type="submit"]'),
     gallery: document.querySelector('.gallery'),
     input: document.querySelector('input[name="searchQuery"]'),
+    loadMoreBtn: document.querySelector('.load-more'),
 }
 
 
 
 refs.form.addEventListener('submit', onFormSubmit);
+refs.loadMoreBtn.addEventListener('click', onLoadMoreClick)
 
 function onFormSubmit(evt) {
-    evt.preventDefault();
+  
+  evt.preventDefault(evt);
   refs.gallery.innerHTML = '';
-  getDataFromAPI(evt).then(createCardMarkup)
+  queryToApi.query = evt.currentTarget.elements.searchQuery.value;
+  queryToApi.resetPage();
+  queryToApi.getDataFromAPI().then(createCardMarkup)
     .then(() => {
       let gallery = new SimpleLightbox('.gallery a');
+      refs.loadMoreBtn.classList.remove('disabled')
       return gallery;
     });
   refs.form.reset();
+ 
 }
+
+
 
 function createCardMarkup({ hits }) {
   
@@ -59,4 +70,11 @@ function createCardMarkup({ hits }) {
 
 }
 
-
+function onLoadMoreClick() {
+  
+  queryToApi.getDataFromAPI().then(createCardMarkup)
+    .then(() => {
+      let gallery = new SimpleLightbox('.gallery a');
+      return gallery;
+    });
+}
