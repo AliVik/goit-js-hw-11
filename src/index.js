@@ -28,8 +28,9 @@ function onFormSubmit(evt) {
   queryToApi.getDataFromAPI()
     .then(response => {
       Notify.success(`Hooray! We found ${response.totalHits} images.`);
-      const checkAmountOfHits = response.totalHits / response.hits.length < 1 ?
-        queryToApi.hideBtn() : queryToApi.showBtn();
+      const checkAmountOfHits = (response.totalHits / response.hits.length) < 1 ?
+        refs.loadMoreBtn.classList.add('disabled') :
+        refs.loadMoreBtn.classList.remove('disabled');
     
       return response;
     })
@@ -79,12 +80,20 @@ function createCardMarkup({ hits }) {
 
 }
 
-function onLoadMoreClick() {
-  const checkAmountOfHits = response.totalHits / response.hits.length < 1 ?
-        queryToApi.hideBtn() : queryToApi.showBtn();
-  queryToApi.getDataFromAPI().then(createCardMarkup)
+function onLoadMoreClick(response) {
+
+  queryToApi.getDataFromAPI()
+    .then(response => {
+         console.log(response.totalHits);
+      console.log(response.hits.length)
+        const checkAmountOfHits = (response.totalHits / response.hits.length) <= 1 ?
+        refs.loadMoreBtn.classList.add('disabled') :
+        refs.loadMoreBtn.classList.remove('disabled');
+      return response;
+    }).then(createCardMarkup)
     .then(() => {
       let gallery = new SimpleLightbox('.gallery a');
+   
       return gallery;
     }).then(() => {
       const { height: cardHeight } = document
@@ -102,12 +111,12 @@ function onLoadMoreClick() {
 function checkAmountOfHits() {
   console.log(queryToApi.totalHits/queryToApi.hits.length)
   
-     if ((response.totalHits/response.hits.length)<1) {
+     if ((response.totalHits/response.hits.length)<=1) {
      refs.loadMoreBtn.classList.add('disabled');
-      } else {
+      }
 
         refs.loadMoreBtn.classList.remove('disabled');
-      }
+      
   
   
 }
