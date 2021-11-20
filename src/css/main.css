@@ -18,6 +18,7 @@
       -ms-grid-row-align: stretch;
       align-self: stretch;
   margin-top: 15px;
+  background-color: #f1f7e7;
   text-decoration: none;
   color: #000;
   -webkit-box-shadow: -1px 5px 10px 2px rgba(34, 60, 80, 0.2);
@@ -41,6 +42,7 @@
           transform: scale(1.03);
   -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2), 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
           box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2), 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+  color: #1c7947;
 }
 
 .gallery-img {
@@ -101,5 +103,36 @@
   height: 1px !important;
   width: 1px !important;
   overflow: hidden;
+}
+
+header {
+  background-color: #7fda89;
+  height: 50px;
+}
+
+body {
+  background-color: #e7eab5;
+}
+
+.search-input {
+  max-width: 600px;
+  margin: auto;
+}
+
+.search-butt {
+  background-color: #259073;
+}
+
+.search-butt:hover, .search-butt:focus {
+  background-color: #041122;
+}
+
+.form-control {
+  border-color: #259073;
+  border-width: 2px;
+}
+
+.form-control:hover, .form-control:focus {
+  border-color: #041122;
 }
 /*# sourceMappingURL=main.css.map */

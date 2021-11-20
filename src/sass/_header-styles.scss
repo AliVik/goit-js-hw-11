@@ -1,0 +1,26 @@
+header {
+  background-color: #7fda89;
+  height: 50px;
+}
+body {
+  background-color: #e7eab5;
+}
+.search-input {
+  max-width: 600px;
+  margin: auto;
+}
+.search-butt {
+  background-color: #259073;
+  &:hover,
+  &:focus {
+    background-color: #041122;
+  }
+}
+.form-control {
+  border-color: #259073;
+  border-width: 2px;
+  &:hover,
+  &:focus {
+    border-color: #041122;
+  }
+}
