@@ -39,10 +39,10 @@ export default class QueryToApi{
         this.page = 1;
     }
 
-    hideBtn() {
-        this.refs.loadMoreBtn.classList.add('disabled');
-    }
-    showBtn() {
-        this.refs.loadMoreBtn.classList.remove('disabled');
-    }
+    // hideBtn() {
+    //     this.refs.loadMoreBtn.classList.add('disabled');
+    // }
+    // showBtn() {
+    //     this.refs.loadMoreBtn.classList.remove('disabled');
+    // }
 }
