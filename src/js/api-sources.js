@@ -35,9 +35,14 @@ export default class QueryToApi{
     }
     }
 
-   
     resetPage() {
         this.page = 1;
     }
- 
+
+    hideBtn() {
+        this.refs.loadMoreBtn.classList.add('disabled');
+    }
+    showBtn() {
+        this.refs.loadMoreBtn.classList.remove('disabled');
+    }
 }
