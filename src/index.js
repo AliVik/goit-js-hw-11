@@ -1,4 +1,7 @@
-import DataFromAPI from './js/data-from-api'
+import getDataFromAPI from './js/api-sources';
+import 'simplelightbox/dist/simple-lightbox.min.css';
+import SimpleLightbox from 'simplelightbox';
+
 
 
 const refs= {
@@ -7,21 +10,27 @@ const refs= {
     gallery: document.querySelector('.gallery'),
     input: document.querySelector('input[name="searchQuery"]'),
 }
-const dataFromApi = new DataFromAPI;
+
+
 
 refs.form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(evt) {
     evt.preventDefault();
-    dataFromApi.value = evt.currentTarget.elements.searchQuery.value;
-    console.log(dataFromApi.getDataFromAPI(dataFromApi.value))
-    dataFromApi.getDataFromAPI(dataFromApi.value);
-   
+  refs.gallery.innerHTML = '';
+  getDataFromAPI(evt).then(createCardMarkup)
+    .then(() => {
+      let gallery = new SimpleLightbox('.gallery a');
+      return gallery;
+    });
+  refs.form.reset();
 }
 
-function createCardMarkup(hits) {
-   const markup = hits.map(hit => {
-        return `<a href="${hit.largeImageURL}" class="photo-card">
+function createCardMarkup({ hits }) {
+  
+  const markup = hits.map(hit => {
+    return `<a href="${hit.largeImageURL}">
+    <div class="photo-card">
   <img src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" />
   <div class="info">
     <p class="info-item">
@@ -41,12 +50,13 @@ function createCardMarkup(hits) {
       <span>${hit.downloads}</span>
     </p>
   </div>
+  </div>
 </a>`
-   })
+  }).join('');
     
-    gallery.insertAdjacentHTML('beforeend', markup);
+    refs.gallery.insertAdjacentHTML('beforeend', markup);
+   
 
-    
 }
 
 
