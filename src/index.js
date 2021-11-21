@@ -4,7 +4,6 @@ import QueryToApi from "./js/api-sources";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const queryToApi = new QueryToApi();
-
 const refs= {
     form: document.querySelector('#search-form'),
     button: document.querySelector('button[type="submit"]'),
@@ -12,7 +11,6 @@ const refs= {
     input: document.querySelector('input[name="searchQuery"]'),
     loadMoreBtn: document.querySelector('.load-more'),
 }
-
 
 
 refs.form.addEventListener('submit', onFormSubmit);
@@ -28,16 +26,16 @@ function onFormSubmit(evt) {
   queryToApi.getDataFromAPI()
     .then(response => {
       Notify.success(`Hooray! We found ${response.totalHits} images.`);
-      const checkAmountOfHits = (response.totalHits / response.hits.length) < 1 ?
-        refs.loadMoreBtn.classList.add('disabled') :
-        refs.loadMoreBtn.classList.remove('disabled');
-    
+      queryToApi.totalHits = response.totalHits;
+
       return response;
     })
     .then(createCardMarkup)
     .then(() => {
       let gallery = new SimpleLightbox('.gallery a');
-      
+      refs.gallery.children.length === queryToApi.totalHits ?
+        refs.loadMoreBtn.classList.add('disabled') :
+        refs.loadMoreBtn.classList.remove('disabled');
       return gallery;
     })
 
@@ -80,22 +78,25 @@ function createCardMarkup({ hits }) {
 
 }
 
-function onLoadMoreClick(response) {
+function onLoadMoreClick() {
 
-  queryToApi.getDataFromAPI()
+  queryToApi.getDataFromAPI().then(response => {
+    queryToApi.totalHits = response.totalHits;
+    return response;
+  })
+  .then(createCardMarkup)
+    .then(() => {
+      let gallery = new SimpleLightbox('.gallery a');
+      
+      return gallery;
+    })
     .then(response => {
-         console.log(response.totalHits);
-      console.log(response.hits.length)
-        const checkAmountOfHits = (response.totalHits / response.hits.length) <= 1 ?
+      refs.gallery.children.length === queryToApi.totalHits ?
         refs.loadMoreBtn.classList.add('disabled') :
         refs.loadMoreBtn.classList.remove('disabled');
       return response;
-    }).then(createCardMarkup)
+    })
     .then(() => {
-      let gallery = new SimpleLightbox('.gallery a');
-   
-      return gallery;
-    }).then(() => {
       const { height: cardHeight } = document
       .querySelector('.gallery')
       .firstElementChild.getBoundingClientRect();
@@ -108,15 +109,3 @@ function onLoadMoreClick(response) {
   
 }
 
-function checkAmountOfHits() {
-  console.log(queryToApi.totalHits/queryToApi.hits.length)
-  
-     if ((response.totalHits/response.hits.length)<=1) {
-     refs.loadMoreBtn.classList.add('disabled');
-      }
-
-        refs.loadMoreBtn.classList.remove('disabled');
-      
-  
-  
-}
