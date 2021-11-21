@@ -7,6 +7,8 @@ export default class QueryToApi{
     constructor() {
         this.query = "";
         this.page = 1;
+        this.per_page = 40;
+        this.totalHits = '';
     }
 
     async getDataFromAPI() {
@@ -19,7 +21,7 @@ export default class QueryToApi{
         orientation: 'horizontal',
         safesearch: true,
         page:`${this.page}`,
-        per_page:40,
+        per_page:`${this.per_page}`,
     })
  
     const response = await axios.get(`${URL}?${searchParams}`)
@@ -39,10 +41,5 @@ export default class QueryToApi{
         this.page = 1;
     }
 
-    // hideBtn() {
-    //     this.refs.loadMoreBtn.classList.add('disabled');
-    // }
-    // showBtn() {
-    //     this.refs.loadMoreBtn.classList.remove('disabled');
-    // }
+
 }
