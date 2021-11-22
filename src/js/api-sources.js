@@ -13,8 +13,8 @@ export default class QueryToApi{
 
     async getDataFromAPI() {
     
-    const URL = 'https://pixabay.com/api/';
-    const searchParams = new URLSearchParams({
+        const URL = 'https://pixabay.com/api/';
+        const searchParams = new URLSearchParams({
         key: '24371502-78d84e7e9c9a76cd0b2a52a11',
         q: `${this.query}`,
         image_type: 'photo',
@@ -22,20 +22,23 @@ export default class QueryToApi{
         safesearch: true,
         page:`${this.page}`,
         per_page:`${this.per_page}`,
-    })
- 
-    const response = await axios.get(`${URL}?${searchParams}`)
-    try {
-         if (response.data.hits.length === 0) {
-            return Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+        })
+        try {
+            const response = await fetch(`${URL}?${searchParams}`);
+            if (!response.ok) {
+                throw new Error('Ups,something went wrong');
+            }
+            this.page += 1;
+              
+            return await response.json();
         }
-       this.page += 1;
-        return await response.data;
+        catch {
+            error=>console.log(error)
+        }
+
+        
     }
-    catch (error) {
-       console.log(error.message)
-    }
-    }
+
 
     resetPage() {
         this.page = 1;
