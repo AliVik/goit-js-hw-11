@@ -12,7 +12,6 @@ const refs= {
     loadMoreBtn: document.querySelector('.load-more'),
 }
 
-
 refs.form.addEventListener('submit', onFormSubmit);
 refs.loadMoreBtn.addEventListener('click', onLoadMoreClick)
 
@@ -25,20 +24,27 @@ function onFormSubmit(evt) {
   
   queryToApi.getDataFromAPI()
     .then(response => {
-      Notify.success(`Hooray! We found ${response.totalHits} images.`);
+      if (response.hits.length === 0) {
+         Notify.failure("Sorry, there are no images matching your search query. Please try again.")
+      } else {
+          Notify.success(`Hooray! We found ${response.totalHits} images.`);
+      }
+    
       queryToApi.totalHits = response.totalHits;
-
+    
       return response;
     })
     .then(createCardMarkup)
     .then(() => {
+     
       let gallery = new SimpleLightbox('.gallery a');
       refs.gallery.children.length === queryToApi.totalHits ?
         refs.loadMoreBtn.classList.add('disabled') :
         refs.loadMoreBtn.classList.remove('disabled');
       return gallery;
     })
-
+  
+  
   refs.form.reset();
  
 }
@@ -87,7 +93,6 @@ function onLoadMoreClick() {
   .then(createCardMarkup)
     .then(() => {
       let gallery = new SimpleLightbox('.gallery a');
-      
       return gallery;
     })
     .then(response => {
@@ -97,12 +102,9 @@ function onLoadMoreClick() {
       return response;
     })
     .then(() => {
-      const { height: cardHeight } = document
-      .querySelector('.gallery')
-      .firstElementChild.getBoundingClientRect();
-
+      const cardHeight = document.querySelector('.gallery').firstElementChild.getBoundingClientRect();
       window.scrollBy({
-        top: cardHeight * 2,
+        top: cardHeight.y *(-2),
         behavior: 'smooth',
       });
     });;
