@@ -18,10 +18,15 @@ refs.loadMoreBtn.addEventListener('click', onLoadMoreClick)
 function onFormSubmit(evt) {
   
   evt.preventDefault(evt);
+
   refs.gallery.innerHTML = '';
   queryToApi.query = evt.currentTarget.elements.searchQuery.value;
-  queryToApi.resetPage();
-  
+  if (queryToApi.query === '') {
+    Notify.warning('Нужно что-нибудь ввести');
+    refs.loadMoreBtn.classList.add('disabled');
+  } else {
+    queryToApi.resetPage();
+
   queryToApi.getDataFromAPI()
     .then(response => {
       if (response.hits.length === 0) {
@@ -43,6 +48,8 @@ function onFormSubmit(evt) {
         refs.loadMoreBtn.classList.remove('disabled');
       return gallery;
     })
+  }
+  
   
   
   refs.form.reset();
