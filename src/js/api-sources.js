@@ -23,18 +23,27 @@ export default class QueryToApi{
         page:`${this.page}`,
         per_page:`${this.per_page}`,
         })
-        try {
-            const response = await fetch(`${URL}?${searchParams}`);
-            if (!response.ok) {
-                throw new Error('Ups,something went wrong');
-            }
-            this.page += 1;
+
+        const response = await axios.get(`${URL}?${searchParams}`);
+        return response.data;
+
+
+
+        // try {
+        //     const response = await fetch(`${URL}?${searchParams}`);
+        //     if (!response.ok) {
+        //         throw new Error('Ups,something went wrong');
+        //     }
+        //     this.page += 1;
               
-            return await response.json();
-        }
-        catch {
-            error=>console.log(error)
-        }
+        //     return await response.json();
+        // }
+        // catch {
+        //     error=>console.log(error)
+        // }
+
+        
+        
 
         
     }
@@ -46,3 +55,4 @@ export default class QueryToApi{
 
 
 }
+
