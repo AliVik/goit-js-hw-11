@@ -1,6 +1,13 @@
 .gallery {
-  display: flex;
-  flex-wrap: wrap;
+  @media screen and (min-width: 423px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  @media screen and (max-width: 899px) {
+    max-width: 620px;
+  }
+
   max-width: 1200px;
   margin: auto;
 
@@ -9,18 +16,29 @@
   list-style: none;
 }
 .gallery-item {
-  flex-basis: calc((100% - 60px) / 4);
-  align-self: stretch;
-  margin-top: 15px;
+  @media screen and (max-width: 899px) {
+    flex-basis: calc((100% - 30px) / 2);
+    margin-top: 15px;
 
-  background-color: #f1f7e7;
-
-  &:not(:nth-child(4n + 4)) {
-    margin-right: 15px;
+    &:not(:nth-child(2n + 2)) {
+      margin-right: 15px;
+    }
+    &:nth-child(-n + 2) {
+      margin-top: 0;
+    }
   }
+  @media screen and (min-width: 900px) {
+    flex-basis: calc((100% - 60px) / 4);
+    background-color: #f1f7e7;
+    margin-top: 15px;
 
-  &:nth-child(-n + 4) {
-    margin-top: 0;
+    &:not(:nth-child(4n + 4)) {
+      margin-right: 15px;
+    }
+
+    &:nth-child(-n + 4) {
+      margin-top: 0;
+    }
   }
 
   text-decoration: none;
