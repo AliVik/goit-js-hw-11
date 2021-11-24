@@ -27,9 +27,21 @@ function onFormSubmit(evt) {
   } else {
     queryToApi.resetPage();
 
-  queryToApi.getDataFromAPI()
-    .then(response => {
+    async function getImages() {
+      try {
+        const images = await queryToApi.getDataFromAPI();
+        return images;
+      }
+      catch (error) {
+        console.log(error)
+      }
+    
+    }
+  
+    getImages().then(response => {
+    console.log(response)
       if (response.hits.length === 0) {
+        
          Notify.failure("Sorry, there are no images matching your search query. Please try again.")
       } else {
           Notify.success(`Hooray! We found ${response.totalHits} images.`);
@@ -48,6 +60,29 @@ function onFormSubmit(evt) {
         refs.loadMoreBtn.classList.remove('disabled');
       return gallery;
     })
+    .catch(error=>console.log(error.message))
+  // queryToApi.getDataFromAPI()
+  //   .then(response => {
+  //     if (response.hits.length === 0) {
+  //        Notify.failure("Sorry, there are no images matching your search query. Please try again.")
+  //     } else {
+  //         Notify.success(`Hooray! We found ${response.totalHits} images.`);
+  //     }
+    
+  //     queryToApi.totalHits = response.totalHits;
+    
+  //     return response;
+    // })
+    // .then(createCardMarkup)
+    // .then(() => {
+     
+    //   let gallery = new SimpleLightbox('.gallery a');
+    //   refs.gallery.children.length === queryToApi.totalHits ?
+    //     refs.loadMoreBtn.classList.add('disabled') :
+    //     refs.loadMoreBtn.classList.remove('disabled');
+    //   return gallery;
+    // })
+    // .catch(error=>console.log(error))
   }
   
   
